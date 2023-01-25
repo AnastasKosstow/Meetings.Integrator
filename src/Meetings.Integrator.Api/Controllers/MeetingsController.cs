@@ -20,7 +20,7 @@ public class MeetingsController : ControllerBase
     }
 
     [HttpPost(nameof(Create))]
-    public async Task<ActionResult> Create(CreateMicrosoftTeamsMeeting command, CancellationToken cancellationToken)
+    public async Task<ActionResult> Create(CreateMeeting command, CancellationToken cancellationToken)
     {
         await commandDispatcher.DispatchAsync(command, cancellationToken);
         return Ok();

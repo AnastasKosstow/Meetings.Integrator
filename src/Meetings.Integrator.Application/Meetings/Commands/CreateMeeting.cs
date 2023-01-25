@@ -1,5 +1,6 @@
 ﻿using Meetings.Integrator.Application.Abstractions;
 using Meetings.Integrator.Application.DTOs.Request;
+using Meetings.Integrator.Application.Enums;
 using Meetings.Integrator.Application.Exceptions;
 using Meetings.Integrator.Application.Services;
 using Meetings.Integrator.Core.Abstractions;
@@ -7,28 +8,31 @@ using Meetings.Integrator.Core.Factories;
 
 namespace Meetings.Integrator.Application.Meetings.Commands;
 
-public record CreateMicrosoftTeamsMeeting(Guid Id, string AccessToken, string Title, DateTime From, DateTime To) 
+public record CreateMeeting(Guid Id, string AccessToken, string Title, DateTime From, DateTime To, ExternalSystem ExternalSystem) 
     : ICommand
 {
 }
 
-public sealed class CreateMicrosoftTeamsMeetingHandler : ICommandHandler<CreateMicrosoftTeamsMeeting>
+public sealed class CreateMeetingHandler : ICommandHandler<CreateMeeting>
 {
+    private readonly IRepository repository;
     private readonly IMeetingFactory meetingsFactory;
     private readonly IMicrosoftGraphApi microsoftGraphApi;
-    private readonly IRepository repository;
+    private readonly IGoogleCalendarApi googleCalendarApi;
 
-    public CreateMicrosoftTeamsMeetingHandler(
+    public CreateMeetingHandler(
+        IRepository repository,
         IMeetingFactory meetingsFactory,
         IMicrosoftGraphApi microsoftGraphApi,
-        IRepository repository)
+        IGoogleCalendarApi googleCalendarApi)
     {
+        this.repository = repository;
         this.meetingsFactory = meetingsFactory;
         this.microsoftGraphApi = microsoftGraphApi;
-        this.repository = repository;
+        this.googleCalendarApi = googleCalendarApi;
     }
 
-    public async Task HandleAsync(CreateMicrosoftTeamsMeeting command, CancellationToken cancellationToken)
+    public async Task HandleAsync(CreateMeeting command, CancellationToken cancellationToken)
     {
         if (await repository.ExistsAsync(command.Id, cancellationToken))
         {
@@ -41,7 +45,13 @@ public sealed class CreateMicrosoftTeamsMeetingHandler : ICommandHandler<CreateM
             command.From,
             command.To);
 
-        var teamsResponse = await microsoftGraphApi.ScheduleMicrosoftTeamsMeetingAsync(createMeetingRequest, cancellationToken);
+        var teamsResponse = command.ExternalSystem switch
+        {
+            ExternalSystem.MicrosoftTeams => await microsoftGraphApi.ScheduleMicrosoftTeamsMeetingAsync(createMeetingRequest, cancellationToken),
+            ExternalSystem.GoogleHangout => await googleCalendarApi.ScheduleGoogleHangoutMeetingAsync(createMeetingRequest, cancellationToken),
+
+            _ => throw new NotImplementedException()
+        };
 
         var meeting = meetingsFactory.CreateMeeting(config =>
         {

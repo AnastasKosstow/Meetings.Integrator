@@ -4,6 +4,7 @@ using Meetings.Integrator.Core.Abstractions;
 using Meetings.Integrator.Infrastructure.Extensions;
 using Meetings.Integrator.Infrastructure.Persistence;
 using Meetings.Integrator.Infrastructure.Persistence.Settings;
+using Meetings.Integrator.Infrastructure.Services.Google.Settings;
 using Meetings.Integrator.Infrastructure.Services.Microsoft;
 using Meetings.Integrator.Infrastructure.Services.Microsoft.Settings;
 using Microsoft.Extensions.Configuration;
@@ -17,14 +18,15 @@ public static class InfrastructureConfiguration
     public static IServiceCollection AddInfrastructureConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
         services
+            .AddSettings<GoogleCalendarApiSettings>(section: nameof(GoogleCalendarApiSettings))
             .AddSettings<MicrosoftGraphApiSettings>(section: nameof(MicrosoftGraphApiSettings))
             .AddSettings<MongoDbSettings>(section: nameof(MongoDbSettings));
 
         services
-            .AddScoped<IMicrosoftGraphApi, MicrosoftGraphApi>()
             .AddScoped<IRepository, MongoRepository>()
             .AddScoped<IQueryRepository, MongoQueryRepository>()
-            ;
+            .AddScoped<IMicrosoftGraphApi, MicrosoftGraphApi>()
+            .AddScoped<IGoogleCalendarApi, GoogleCalendarApi>();
 
         services.AddMongo(configuration);
 

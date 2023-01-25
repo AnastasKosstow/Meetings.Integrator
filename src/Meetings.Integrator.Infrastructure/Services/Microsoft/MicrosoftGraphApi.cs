@@ -41,7 +41,7 @@ public sealed class MicrosoftGraphApi : IMicrosoftGraphApi
         }
         catch
         {
-            throw new MicrosoftGraphApiRequestException("Unable to Schedule a Microsoft Teams Meeting.");
+            throw new MicrosoftGraphApiRequestException("Unable to schedule a Microsoft Teams meeting.");
         }
     }
 
