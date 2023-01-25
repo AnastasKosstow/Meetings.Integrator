@@ -38,7 +38,6 @@ public sealed class CreateMicrosoftTeamsMeetingHandler : ICommandHandler<CreateM
 
     public async Task HandleAsync(CreateMicrosoftTeamsMeeting command, CancellationToken cancellationToken)
     {
-        // if (meeting is { })
         if (await repository.ExistsAsync(command.Id, cancellationToken))
         {
             throw new MeetingAlreadyExistsException(command.Id.ToString());

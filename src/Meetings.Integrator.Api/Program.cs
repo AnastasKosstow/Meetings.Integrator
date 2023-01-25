@@ -1,8 +1,9 @@
 using Meetings.Integrator.Core;
 using Meetings.Integrator.Application;
-using Meetings.Integrator.Infrastructure;
 using Meetings.Integrator.Application.Abstractions;
 using Meetings.Integrator.Application.Meetings.Commands;
+using Meetings.Integrator.Infrastructure;
+using Meetings.Integrator.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +17,10 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseHttpsRedirection()
+   .UseSwagger()
+   .UseSwaggerUI()
+   .UseErrorHandler();
 
 app.MapPost("/create", async (CreateMicrosoftTeamsMeeting command, ICommandDispatcher commandDispatcher) =>
 {
