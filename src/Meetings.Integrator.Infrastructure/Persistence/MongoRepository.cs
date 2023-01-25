@@ -27,16 +27,21 @@ internal sealed class MongoRepository : IRepository
     public async Task<Meeting> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         var document = await Collection
-            .Find(rd => rd.Id == id)
+            .Find(md => md.Id == id)
             .SingleOrDefaultAsync(cancellationToken: cancellationToken);
 
         return document.AsEntity(factory);
     }
 
+    public Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return Collection.DeleteOneAsync(md => md.Id == id, cancellationToken: cancellationToken);
+    }
+
     public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
     {
         return await Collection
-            .Find(rd => rd.Id == id)
+            .Find(md => md.Id == id)
             .AnyAsync(cancellationToken: cancellationToken);
     }
 }

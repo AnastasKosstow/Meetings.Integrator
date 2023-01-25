@@ -7,17 +7,9 @@ using Meetings.Integrator.Core.Factories;
 
 namespace Meetings.Integrator.Application.Meetings.Commands;
 
-public record CreateMicrosoftTeamsMeeting : ICommand
+public record CreateMicrosoftTeamsMeeting(Guid Id, string AccessToken, string Title, DateTime From, DateTime To) 
+    : ICommand
 {
-    public Guid Id { get; }
-    public string AccessToken { get; }
-    public string Title { get; }
-    public DateTime From { get; }
-    public DateTime To { get; }
-
-    public CreateMicrosoftTeamsMeeting(Guid id, string accessToken, string title, DateTime from, DateTime to)
-        =>
-        (Id, AccessToken, Title, From, To) = (id, accessToken, title, from, to);
 }
 
 public sealed class CreateMicrosoftTeamsMeetingHandler : ICommandHandler<CreateMicrosoftTeamsMeeting>

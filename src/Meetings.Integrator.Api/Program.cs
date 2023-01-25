@@ -1,19 +1,25 @@
 using Meetings.Integrator.Core;
 using Meetings.Integrator.Application;
-using Meetings.Integrator.Application.Abstractions;
-using Meetings.Integrator.Application.Meetings.Commands;
 using Meetings.Integrator.Infrastructure;
 using Meetings.Integrator.Api.Middlewares;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 
 builder.Services
     .AddCoreConfigurations()
     .AddApplicationConfigurations()
     .AddInfrastructureConfigurations(builder.Configuration);
+
+builder.Services
+    .AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters()
+    .AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
 
@@ -22,9 +28,5 @@ app.UseHttpsRedirection()
    .UseSwaggerUI()
    .UseErrorHandler();
 
-app.MapPost("/create", async (CreateMicrosoftTeamsMeeting command, ICommandDispatcher commandDispatcher) =>
-{
-    await commandDispatcher.DispatchAsync(command, CancellationToken.None);
-});
-
+app.MapControllers();
 app.Run();

@@ -1,4 +1,5 @@
-﻿using Meetings.Integrator.Application.Services;
+﻿using Meetings.Integrator.Application.Abstractions;
+using Meetings.Integrator.Application.Services;
 using Meetings.Integrator.Core.Abstractions;
 using Meetings.Integrator.Infrastructure.Extensions;
 using Meetings.Integrator.Infrastructure.Persistence;
@@ -20,7 +21,10 @@ public static class InfrastructureConfiguration
             .AddSettings<MongoDbSettings>(section: nameof(MongoDbSettings));
 
         services
-            .AddScoped<IMicrosoftGraphApi, MicrosoftGraphApi>();
+            .AddScoped<IMicrosoftGraphApi, MicrosoftGraphApi>()
+            .AddScoped<IRepository, MongoRepository>()
+            .AddScoped<IQueryRepository, MongoQueryRepository>()
+            ;
 
         services.AddMongo(configuration);
 
@@ -36,7 +40,6 @@ public static class InfrastructureConfiguration
             {
                 return new MongoClient(mongoOptions.ConnectionString);
             })
-            .AddScoped<IRepository, MongoRepository>()
             .AddScoped(serviceProvider =>
             {
                 var client = serviceProvider.GetRequiredService<IMongoClient>();

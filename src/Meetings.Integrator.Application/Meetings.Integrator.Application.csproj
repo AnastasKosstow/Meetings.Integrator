@@ -10,10 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Meetings\Queries\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Meetings.Integrator.Core\Meetings.Integrator.Core.csproj" />
   </ItemGroup>
 

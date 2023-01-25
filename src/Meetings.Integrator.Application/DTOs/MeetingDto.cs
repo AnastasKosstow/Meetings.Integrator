@@ -1,6 +1,6 @@
-﻿namespace Meetings.Integrator.Infrastructure.Persistence.Documents;
+﻿namespace Meetings.Integrator.Application.DTOs;
 
-internal class MeetingDocument
+public class MeetingDto
 {
     public Guid Id { get; set; }
     public string Title { get; set; }
