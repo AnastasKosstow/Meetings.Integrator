@@ -2,7 +2,7 @@
 
 namespace Meetings.Integrator.Core.Abstractions;
 
-public interface IMeetingRepository
+public interface IRepository
 {
     Task AddAsync(Meeting meeting, CancellationToken cancellationToken);
     Task<Meeting> GetAsync(Guid id, CancellationToken cancellationToken);

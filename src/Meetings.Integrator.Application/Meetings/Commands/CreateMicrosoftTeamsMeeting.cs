@@ -24,23 +24,25 @@ public sealed class CreateMicrosoftTeamsMeetingHandler : ICommandHandler<CreateM
 {
     private readonly IMeetingFactory meetingsFactory;
     private readonly IMicrosoftGraphApi microsoftGraphApi;
-    private readonly IMeetingRepository meetingRepository;
+    private readonly IRepository repository;
 
     public CreateMicrosoftTeamsMeetingHandler(
         IMeetingFactory meetingsFactory,
-        IMicrosoftGraphApi microsoftGraphApi)
+        IMicrosoftGraphApi microsoftGraphApi,
+        IRepository repository)
     {
         this.meetingsFactory = meetingsFactory;
         this.microsoftGraphApi = microsoftGraphApi;
+        this.repository = repository;
     }
 
     public async Task HandleAsync(CreateMicrosoftTeamsMeeting command, CancellationToken cancellationToken)
     {
-        // if (meeting is {}) 
-        //if (await meetingRepository.ExistsAsync(command.Id, cancellationToken))
-        //{
-        //    throw new MeetingAlreadyExistsException(command.Id.ToString());
-        //}
+        // if (meeting is { })
+        if (await repository.ExistsAsync(command.Id, cancellationToken))
+        {
+            throw new MeetingAlreadyExistsException(command.Id.ToString());
+        }
 
         var createMeetingRequest = new CreateMeetingRequest(
             command.AccessToken,
@@ -59,6 +61,6 @@ public sealed class CreateMicrosoftTeamsMeetingHandler : ICommandHandler<CreateM
                 .ForDate(command.From, command.To);
         }).Build();
 
-        await meetingRepository.AddAsync(meeting, cancellationToken);
+        await repository.AddAsync(meeting, cancellationToken);
     }
 }

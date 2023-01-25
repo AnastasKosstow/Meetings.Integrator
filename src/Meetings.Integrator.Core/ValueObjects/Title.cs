@@ -4,7 +4,7 @@ namespace Meetings.Integrator.Core.ValueObjects;
 
 public record Title
 {
-    public string MeetingLink { get; private set; }
+    public string MeetingTitle { get; private set; }
 
     public Title(string meetingLink)
     {
@@ -13,6 +13,6 @@ public record Title
             throw new InvalidTitleException($"Invalid title value - {meetingLink}.");
         }
 
-        MeetingLink = meetingLink;
+        MeetingTitle = meetingLink;
     }
 }
