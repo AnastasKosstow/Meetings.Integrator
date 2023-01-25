@@ -36,8 +36,8 @@ public class MeetingsController : ControllerBase
     [HttpGet(nameof(Get))]
     public async Task<ActionResult<MeetingDto>> Get([FromQuery] GetMeeting query, CancellationToken cancellationToken)
     {
-        var meetings = await queryDispatcher.DispatchAsync(query, cancellationToken);
-        return Ok(meetings);
+        var meeting = await queryDispatcher.DispatchAsync(query, cancellationToken);
+        return Ok(meeting);
     }
 
     [HttpGet(nameof(GetFor))]
