@@ -1,5 +1,5 @@
 
-## Meetings integrator service
+# Meetings integrator service
 based on .NET7 with clean architecture
 
 ## Development Build Prerequisites
