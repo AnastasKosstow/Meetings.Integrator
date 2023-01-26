@@ -7,6 +7,7 @@ Note that when doing a local development build, you need to have **Composer v2**
 If your OS provides a lower version than v2, you can install Composer v2 manually. 
 
 Source of all integrations is in Service folder in Infrastructure
+> 
 ![](https://github.com/AnastasKosstow/Meetings.Integrator/blob/main/integrations.png)
 
 Microsoft Teams
