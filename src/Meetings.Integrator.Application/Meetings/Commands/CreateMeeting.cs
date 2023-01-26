@@ -36,7 +36,7 @@ public sealed class CreateMeetingHandler : ICommandHandler<CreateMeeting>
     {
         if (await repository.ExistsAsync(command.Id, cancellationToken))
         {
-            throw new MeetingAlreadyExistsException(command.Id.ToString());
+            throw new MeetingAlreadyExistsException($"Meeting with id: {command.Id} already exists");
         }
 
         var createMeetingRequest = new CreateMeetingRequest(

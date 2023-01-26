@@ -1,4 +1,5 @@
-﻿using Meetings.Integrator.Core.ValueObjects;
+﻿using Meetings.Integrator.Core.Exceptions;
+using Meetings.Integrator.Core.ValueObjects;
 
 namespace Meetings.Integrator.Core.Factories.Configuration;
 
@@ -14,7 +15,7 @@ internal class DefaultMeetingConfigurationBuilder : IMeetingConfiguration
     {
         if (id == Guid.Empty)
         {
-            // throw
+            throw new InvalidAggregateIdException("Id must be provided");
         }
 
         Id = id;

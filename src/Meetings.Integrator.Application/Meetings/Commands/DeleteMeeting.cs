@@ -23,7 +23,7 @@ public sealed class DeleteMeetingHandler : ICommandHandler<DeleteMeeting>
     {
         if (!await repository.ExistsAsync(command.Id, cancellationToken))
         {
-            throw new MeetingMissingException(command.Id.ToString());
+            throw new MeetingMissingException($"Unable to find meeting with id: {command.Id}");
         }
 
         await repository.DeleteAsync(command.Id, cancellationToken);

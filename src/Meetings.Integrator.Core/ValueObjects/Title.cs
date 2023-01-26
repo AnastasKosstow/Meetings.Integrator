@@ -10,7 +10,7 @@ public record Title
     {
         if (string.IsNullOrWhiteSpace(meetingLink))
         {
-            throw new InvalidTitleException($"Invalid title value - {meetingLink}.");
+            throw new InvalidTitleException("Title must be provided");
         }
 
         MeetingTitle = meetingLink;

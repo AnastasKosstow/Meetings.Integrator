@@ -1,5 +1,6 @@
 ﻿using Meetings.Integrator.Application.Abstractions;
 using Meetings.Integrator.Application.DTOs;
+using Meetings.Integrator.Application.Exceptions;
 using Meetings.Integrator.Core.Abstractions;
 
 namespace Meetings.Integrator.Application.Meetings.Queries;
@@ -21,6 +22,11 @@ public sealed class GetMeetingHandler : IQueryHandler<GetMeeting, MeetingDto>
     public async Task<MeetingDto> HandleAsync(GetMeeting query, CancellationToken cancellationToken)
     {
         var meeting = await repository.GetAsync(query.Id, cancellationToken);
+
+        if (meeting == null)
+        {
+            throw new MeetingMissingException($"Unable to find meeting with id: {query.Id}");
+        }
 
         return new()
         {

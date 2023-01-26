@@ -10,7 +10,7 @@ public record Link
     {
         if (string.IsNullOrWhiteSpace(url))
         {
-            throw new InvalidLinkException($"Invalid meeting url value - {url}.");
+            throw new InvalidLinkException("Url must be provided");
         }
 
         Url = url;
