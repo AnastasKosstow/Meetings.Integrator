@@ -1,7 +1,7 @@
 
 # Meetings integrator service
 based on .NET7 with clean architecture
-
+> 
 ## Development Build Prerequisites
 Note that when doing a local development build, you need to have **Composer v2** installed. 
 If your OS provides a lower version than v2, you can install Composer v2 manually. 
