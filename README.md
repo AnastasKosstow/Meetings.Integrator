@@ -1,6 +1,7 @@
 
 # Meetings integrator service
 Based on .NET7 with clean architecture
+> 
 All implementations are for "on beahlf of" code flow and meetings are created by accessToken provided from external provider app (google, microsoft, etc.).
 > 
 
